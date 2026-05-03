@@ -24,12 +24,18 @@ export default function BackgroundAudio({
 
     const onPlay = () => setPlaying(true)
     const onPause = () => setPlaying(false)
+    const onEnded = () => {
+      a.currentTime = 0
+      a.play().catch(() => {})
+    }
     a.addEventListener("play", onPlay)
     a.addEventListener("pause", onPause)
+    a.addEventListener("ended", onEnded)
 
     return () => {
       a.removeEventListener("play", onPlay)
       a.removeEventListener("pause", onPause)
+      a.removeEventListener("ended", onEnded)
     }
   }, [volume])
 
