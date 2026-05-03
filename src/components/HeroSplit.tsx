@@ -249,6 +249,29 @@ export default function HeroSplit() {
           "text+=0.1"
         );
 
+      // Fade background sentence text as character rises
+      gsap.to(textLeft, {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top+=400',
+          end: 'top top+=700',
+          scrub: true,
+        },
+        ease: 'none',
+      });
+
+      gsap.to(textRight, {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top+=400',
+          end: 'top top+=700',
+          scrub: true,
+        },
+        ease: 'none',
+      });
+
       if (!prefersReducedMotion) {
         gsap.to(divider, {
           opacity: 0.8,
