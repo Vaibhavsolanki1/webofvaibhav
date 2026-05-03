@@ -86,7 +86,7 @@ const ShaderBackground: React.FC<ShaderBackgroundProps> = ({ theme = 'dark' }) =
         : 
         `vec4 bgColor1 = vec4(0.95, 0.95, 0.95, 1.0);
          vec4 bgColor2 = vec4(0.90, 0.90, 0.90, 1.0);
-         vec4 lineColor = vec4(1.0, 1.0, 1.0, 1.0);`
+        vec4 lineColor = vec4(0.612, 0.639, 0.686, 1.0);`
       }
 
       for(int l = 0; l < linesPerGroup; l++) {
@@ -110,11 +110,7 @@ const ShaderBackground: React.FC<ShaderBackgroundProps> = ({ theme = 'dark' }) =
       fragColor = mix(bgColor1, bgColor2, uv.x);
       fragColor *= verticalFade;
       fragColor.a = 1.0;
-      ${isDark ? `
       fragColor += lines;
-      ` : `
-      fragColor.rgb = mix(fragColor.rgb, vec3(0.0), clamp(lines.r, 0.0, 1.0));
-      `}
 
       gl_FragColor = fragColor;
     }

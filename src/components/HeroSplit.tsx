@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import ShaderBackground from "@/components/ui/shader-background";
 import BackgroundAudio from "@/components/ui/background-audio";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 import Preloader from "@/components/Preloader";
 import { useState } from "react";
 import useGsapScrollTrigger from "@/hooks/useGsapScrollTrigger";
@@ -32,6 +33,7 @@ export default function HeroSplit() {
   const dividerRef = useRef<HTMLDivElement>(null);
   const textLeftRef = useRef<HTMLDivElement>(null);
   const textRightRef = useRef<HTMLDivElement>(null);
+  const topLogoRef = useRef<HTMLDivElement>(null);
   const dividerXRef = useRef<((value: number) => void) | null>(null);
   const interactionEnabledRef = useRef(false);
   const mouseRef = useRef<{
@@ -64,6 +66,7 @@ export default function HeroSplit() {
     const divider = dividerRef.current;
     const textLeft = textLeftRef.current;
     const textRight = textRightRef.current;
+    const topLogo = topLogoRef.current;
     const leftGlow = leftGlowRef.current;
     const rightGlow = rightGlowRef.current;
 
@@ -76,6 +79,7 @@ export default function HeroSplit() {
       !divider ||
       !textLeft ||
       !textRight ||
+      !topLogo ||
       !leftGlow ||
       !rightGlow
     ) {
@@ -95,6 +99,7 @@ export default function HeroSplit() {
       gsap.set(characterMain, { opacity: 0, scale: 0.94, filter: "blur(10px)" });
       gsap.set([leftGroup, rightGroup], { opacity: 0, scale: 0.98 });
       gsap.set([leftGlow, rightGlow], { opacity: 0 });
+      gsap.set(topLogo, { opacity: 0, y: -16, scale: 0.9 });
       gsap.set(divider, { opacity: 0, scaleY: 0, transformOrigin: "top" });
       gsap.set([...leftLines, ...rightLines], { opacity: 0, y: 30 });
 
@@ -108,6 +113,10 @@ export default function HeroSplit() {
           fastScrollEnd: true,
           onUpdate: (self) => {
             interactionEnabledRef.current = self.progress > 0.55;
+            const welcomeOverlay = document.getElementById("welcome-overlay");
+            if (welcomeOverlay) {
+              gsap.set(welcomeOverlay, { autoAlpha: self.progress < 0.52 ? 1 : 0 });
+            }
           },
         },
       });
@@ -147,6 +156,17 @@ export default function HeroSplit() {
             ease: "power2.out",
           },
           "-=0.2"
+        )
+        .to(
+          topLogo,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.55,
+            ease: "power2.out",
+          },
+          "split+=0.08"
         )
         .to(
           split,
@@ -354,14 +374,31 @@ export default function HeroSplit() {
     <section
       ref={sectionRef}
       className="hero relative h-screen overflow-hidden text-slate-900"
+      style={{ willChange: "transform" }}
     >
       <Preloader onDone={() => setShowWelcome(true)} />
-      <div className="absolute inset-0 flex">
+
+      <div className="absolute inset-0 z-0 flex">
         <div className="relative h-full w-1/2 overflow-hidden">
           <ShaderBackground theme="light" />
         </div>
         <div className="relative h-full w-1/2 overflow-hidden bg-[#050505]">
           <ShaderBackground theme="dark" />
+        </div>
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 z-[5] flex">
+        <div className="relative h-full w-1/2 overflow-hidden">
+          <DottedSurface
+            isDark={false}
+            className="absolute inset-0 opacity-35 mix-blend-multiply"
+          />
+        </div>
+        <div className="relative h-full w-1/2 overflow-hidden">
+          <DottedSurface
+            isDark={true}
+            className="absolute inset-0 opacity-35 mix-blend-screen"
+          />
         </div>
       </div>
 
@@ -473,10 +510,28 @@ export default function HeroSplit() {
           </p>
         </div>
       </div>
+
+      <div
+        ref={topLogoRef}
+        className="pointer-events-none absolute left-1/2 top-5 z-40 -translate-x-1/2"
+      >
+        <Image
+          src="/logo.png"
+          alt="Vaibhav logo"
+          width={94}
+          height={36}
+          className="h-auto w-[94px] object-contain md:w-[108px]"
+          priority
+        />
+      </div>
+
       <BackgroundAudio src="/audio/dark-theme.mp3" />
 
       {showWelcome && (
-        <div className="pointer-events-none fixed inset-0 z-60 flex items-center justify-center">
+        <div
+          id="welcome-overlay"
+          className="pointer-events-none fixed inset-0 z-60 flex items-center justify-center"
+        >
           <div className="text-center drop-shadow-lg" style={{
             background: 'linear-gradient(to right, #000000 0%, #000000 50%, #ffffff 50%, #ffffff 100%)',
             backgroundClip: 'text',
