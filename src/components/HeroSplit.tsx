@@ -473,7 +473,7 @@ export default function HeroSplit() {
           </p>
         </div>
       </div>
-      <BackgroundAudio src="/audio/dark-theme.mp3" startMuted={true} />
+      <BackgroundAudio src="/audio/dark-theme.mp3" />
 
       {showWelcome && (
         <div className="pointer-events-none fixed inset-0 z-60 flex items-center justify-center">

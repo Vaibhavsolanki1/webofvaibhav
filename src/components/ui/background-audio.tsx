@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 export default function BackgroundAudio({
   src = "/audio/dark-theme.mp3",
   volume = 0.28,
-  startMuted = true,
+  startMuted = false,
 }: {
   src?: string
   volume?: number
@@ -53,7 +53,7 @@ export default function BackgroundAudio({
 
   return (
     <>
-      <audio ref={audioRef} src={src} preload="auto" />
+      <audio ref={audioRef} src={src} preload="auto" loop />
       <button
         aria-label={muted ? "Unmute background music" : "Mute background music"}
         onClick={toggleMute}
