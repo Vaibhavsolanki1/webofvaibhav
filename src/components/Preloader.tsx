@@ -50,22 +50,22 @@ export default function Preloader({ onDone }: { onDone?: () => void }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <div className="flex flex-col items-center gap-5">
-            <div className="relative grid place-items-center">
-              <div className="absolute h-44 w-44 rounded-full bg-slate-200/10 blur-2xl" />
+          <div className="flex flex-col items-center">
+            <div className="relative grid h-[24rem] w-[24rem] place-items-center">
+              <div className="absolute inset-0 rounded-full bg-slate-200/10 blur-2xl" />
               <Image
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Vaibhav logo"
-                width={160}
-                height={160}
-                className="relative h-40 w-40 opacity-100 brightness-125 drop-shadow-[0_0_28px_rgba(148,163,184,0.85)]"
+                width={336}
+                height={336}
+                className="relative h-84 w-84 object-contain opacity-100 brightness-125 drop-shadow-[0_0_28px_rgba(148,163,184,0.85)]"
                 priority
               />
-              <span className="absolute text-sm font-semibold tracking-[0.2em] text-slate-200">
-                {progress}%
-              </span>
             </div>
-            <div className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
+            <span className="mt-2 text-sm font-semibold tracking-[0.2em] text-slate-200">
+              {progress}%
+            </span>
+            <div className="mt-6 text-center text-xs uppercase tracking-[0.3em] text-slate-400">
               Initializing story
             </div>
           </div>

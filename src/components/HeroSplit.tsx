@@ -518,9 +518,9 @@ export default function HeroSplit() {
         <Image
           src="/logo.png"
           alt="Vaibhav logo"
-          width={94}
-          height={36}
-          className="h-auto w-[94px] object-contain md:w-[108px]"
+          width={178}
+          height={69}
+          className="h-auto w-[178px] object-contain md:w-[205px]"
           priority
         />
       </div>
