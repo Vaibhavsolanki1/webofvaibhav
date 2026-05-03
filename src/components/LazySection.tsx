@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+type LazySectionMargin = NonNullable<Parameters<typeof useInView>[1]>["margin"];
+
 type LazySectionProps = {
   children: React.ReactNode;
   className?: string;
-  rootMargin?: string;
+  rootMargin?: LazySectionMargin;
 };
 
 export default function LazySection({

@@ -14,8 +14,7 @@ export function Entropy({ className = "", size = 400, fullscreen = false }: Entr
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D
 
     const actualSize = fullscreen ? Math.max(window.innerWidth, window.innerHeight) : size
     const dpr = window.devicePixelRatio || 1
@@ -23,7 +22,7 @@ export function Entropy({ className = "", size = 400, fullscreen = false }: Entr
     canvas.height = actualSize * dpr
     canvas.style.width = `${actualSize}px`
     canvas.style.height = `${actualSize}px`
-    ctx.scale(dpr, dpr)
+    context.scale(dpr, dpr)
 
     const particleColor = '#ffffff'
 
@@ -126,7 +125,7 @@ export function Entropy({ className = "", size = 400, fullscreen = false }: Entr
     let animationId: number
 
     function animate() {
-      ctx.clearRect(0, 0, actualSize, actualSize)
+      context.clearRect(0, 0, actualSize, actualSize)
 
       if (time % 30 === 0) {
         updateNeighbors()
@@ -134,31 +133,31 @@ export function Entropy({ className = "", size = 400, fullscreen = false }: Entr
 
       particles.forEach(particle => {
         particle.update()
-        particle.draw(ctx)
+        particle.draw(context)
 
         particle.neighbors.forEach(neighbor => {
           const distance = Math.hypot(particle.x - neighbor.x, particle.y - neighbor.y)
           if (distance < 50) {
             const alpha = 0.2 * (1 - distance / 50)
-            ctx.strokeStyle = `${particleColor}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`
-            ctx.beginPath()
-            ctx.moveTo(particle.x, particle.y)
-            ctx.lineTo(neighbor.x, neighbor.y)
-            ctx.stroke()
+            context.strokeStyle = `${particleColor}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`
+            context.beginPath()
+            context.moveTo(particle.x, particle.y)
+            context.lineTo(neighbor.x, neighbor.y)
+            context.stroke()
           }
         })
       })
 
-      ctx.strokeStyle = `${particleColor}4D`
-      ctx.lineWidth = 0.5
-      ctx.beginPath()
-      ctx.moveTo(actualSize / 2, 0)
-      ctx.lineTo(actualSize / 2, actualSize)
-      ctx.stroke()
+      context.strokeStyle = `${particleColor}4D`
+      context.lineWidth = 0.5
+      context.beginPath()
+      context.moveTo(actualSize / 2, 0)
+      context.lineTo(actualSize / 2, actualSize)
+      context.stroke()
 
-      ctx.font = '12px monospace'
-      ctx.fillStyle = '#ffffff'
-      ctx.textAlign = 'center'
+      context.font = '12px monospace'
+      context.fillStyle = '#ffffff'
+      context.textAlign = 'center'
 
       time++
       animationId = requestAnimationFrame(animate)
